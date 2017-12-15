@@ -32,30 +32,23 @@ object CardUtil {
       CardDirection.values()[(orientation.index + 3) % 4];
   
   fun exits(Card card, CardDirection dir) {
-    Set<CardDirection> exits = Set<CardDirection>();
+    val exits = Set<CardDirection>();
 
-    switch (card) {
-      case Card.rec:
-      case Card.doc:
-      case Card.com:
+    when (card) {
+      Card.rec, Card.doc, Card.com ->
         exits = Set<CardDirection>.from([dir]);
-        break;
-      case Card.lab:
+      Card.lab ->
         exits = Set<CardDirection>.from([dir, cw(dir)]);
-        break;
-      case Card.fac:
+      Card.fac ->
         exits = Set<CardDirection>.from([dir, opposite(dir)]);
-        break;
-      case Card.hab:
+      Card.hab -> {
         exits = Set<CardDirection>.from(CardDirection.values);
         exits.removeWhere((exitdir) => exitdir == dir);
-        break;
-      case Card.pow:
+      }
+      Card.pow ->
         exits = Set<CardDirection>.from(CardDirection.values);
-        break;
-      case Card.sab:
-        throw ArgumentError.value(Card.sab);
-        break;
+      Card.sab ->
+        throw IllegalArgumentException(Card.sab);
     }
 
     return exits;
