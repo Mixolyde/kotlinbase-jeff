@@ -22,3 +22,9 @@
 hs_err_pid*
 
 *.swp
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr

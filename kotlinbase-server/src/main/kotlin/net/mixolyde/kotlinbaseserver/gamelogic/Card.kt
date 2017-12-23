@@ -2,7 +2,7 @@ package net.mixolyde.kotlinbaseserver.gamelogic
 
 enum class CardDirection { up, right, down, left }
 
-enum class Card (val name:String, val priority: Int, val cost: Int, val isCap: Boolean) {
+enum class Card (val longName:String, val priority: Int, val cost: Int, val isCap: Boolean) {
   rec("Recreation", 0, -1, true),
   doc("Docking Bay", 1, -1, true),
   com("Communication", 2, -1, true),
@@ -22,40 +22,40 @@ enum class Card (val name:String, val priority: Int, val cost: Int, val isCap: B
 
 
 object CardUtil {
-  val deckSize = 20;
-  val handSize = 5;
+  val deckSize = 20
+  val handSize = 5
   fun opposite(orientation: CardDirection) =
-      CardDirection.values()[(orientation.index + 2) % 4];
+      CardDirection.values()[(orientation.ordinal + 2) % 4]
   fun cw(orientation: CardDirection) =
-      CardDirection.values()[(orientation.index + 1) % 4];
+      CardDirection.values()[(orientation.ordinal + 1) % 4]
   fun ccw(orientation: CardDirection) =
-      CardDirection.values()[(orientation.index + 3) % 4];
+      CardDirection.values()[(orientation.ordinal + 3) % 4]
   
-  fun exits(Card card, CardDirection dir) {
-    val exits = Set<CardDirection>();
+  fun exits(card: Card, dir: CardDirection):Set<CardDirection> {
+    val exits:Set<CardDirection>
 
     when (card) {
       Card.rec, Card.doc, Card.com ->
-        exits = Set<CardDirection>.from([dir]);
+        exits = setOf(dir)
       Card.lab ->
-        exits = Set<CardDirection>.from([dir, cw(dir)]);
+        exits = setOf(dir, cw(dir))
       Card.fac ->
-        exits = Set<CardDirection>.from([dir, opposite(dir)]);
+        exits = setOf(dir, opposite(dir))
       Card.hab -> {
-        exits = Set<CardDirection>.from(CardDirection.values);
-        exits.removeWhere((exitdir) => exitdir == dir);
+        exits = CardDirection.values().toMutableSet()
+        exits.filterNot{exit:CardDirection -> exit == dir}
       }
       Card.pow ->
-        exits = Set<CardDirection>.from(CardDirection.values);
+        exits = CardDirection.values().toSet()
       Card.sab ->
-        throw IllegalArgumentException(Card.sab);
+        throw IllegalArgumentException(Card.sab.shortName)
     }
 
-    return exits;
+    return exits
   }
 
   fun cardsToString(cards: List<Card>):String {
-    var shortNames = cards.map{it.shortName}.joinToString(",");
+    var shortNames = cards.map{it.shortName}.joinToString(",")
     return "[${shortNames}]";
   }
 }

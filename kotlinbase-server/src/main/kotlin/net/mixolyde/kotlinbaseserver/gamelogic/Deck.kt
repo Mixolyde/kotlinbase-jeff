@@ -1,26 +1,29 @@
 package net.mixolyde.kotlinbaseserver.gamelogic
 
-object Decks {
-  static const Map<Card, int> cardCounts = const {
-    Card.rec: 3,
-    Card.doc: 2,
-    Card.com: 3,
-    Card.lab: 4,
-    Card.fac: 3,
-    Card.hab: 2,
-    Card.pow: 1,
-    Card.sab: 2
-  };
+object DeckUtil {
+  private val cardCounts: Map<Card, Int> = kotlin.collections.mapOf(
+    Pair(Card.rec,  3),
+    Pair(Card.doc,  2),
+    Pair(Card.com,  3),
+    Pair(Card.lab,  4),
+    Pair(Card.fac,  3),
+    Pair(Card.hab,  2),
+    Pair(Card.pow,  1),
+    Pair(Card.sab,  2)
+  )
 
-  static List<Card> _sortedDeck() {
-    return Card.values
-        .expand((card) => new List.filled(DeckUtil.cardCounts[card], card))
-        .toList();
+  private fun sortedDeck(): List<Card>  {
+    return Card.values()
+    .flatMap { card ->
+      val fillList: MutableList<Card> = mutableListOf()
+      1.rangeTo(DeckUtil.cardCounts[card]!!).forEach {
+        fillList.add(card)
+      }
+      fillList
+    }
   }
 
-  static List<Card> shuffledDeck() {
-    var cards = _sortedDeck();
-    cards.shuffle(serverRandom);
-    return cards;
+  fun shuffledDeck(): List<Card> {
+    return sortedDeck().shuffled()
   }
 }

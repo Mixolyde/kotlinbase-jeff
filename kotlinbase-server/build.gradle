@@ -46,4 +46,6 @@ dependencies {
 	runtime('org.springframework.boot:spring-boot-devtools')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('io.projectreactor:reactor-test')
+	testCompile "org.jetbrains.kotlin:kotlin-test"
+	testCompile "org.jetbrains.kotlin:kotlin-test-junit"
 }
